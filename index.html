@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Car Rental Interactive FAQ</title>
+<style>
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f4f8;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+  h1 {
+    color: #002B4D;
+    text-align: center;
+  }
+  .step {
+    display: none;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 700px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-in-out;
+  }
+  .step.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  button {
+    display: inline-block;
+    margin: 10px 10px 0 0;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+    color: #fff;
+  }
+  button:hover { transform: scale(1.05); }
+
+  /* Membership colors */
+  .classic { background: #3399FF; }
+  .plus { background: #0080FF; }
+  .premier { background: #002B4D; }
+
+  /* Category buttons */
+  .category { background: #0059B3; }
+
+  .info {
+    background: #e6f0ff;
+    padding: 10px;
+    margin-top: 10px;
+    border-left: 4px solid #004080;
+    border-radius: 5px;
+    font-size: 0.9em;
+  }
+
+  .menu {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .menu button {
+    background: #004080;
+    margin: 5px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Car Rental Interactive FAQ</h1>
+<div class="menu">
+  <button onclick="restart()">Categories Menu</button>
+</div>
+<p style="text-align:center;">Click through a category to explore FAQs by scenario and membership type.</p>
+
+<!-- Step 1: Category Selection -->
+<div id="categories" class="step show">
+  <p>Select a category:</p>
+  <button class="category" onclick="nextStep('membershipStep')">Membership Benefits</button>
+  <button class="category" onclick="nextStep('setupStep')">Setup & Processing</button>
+  <button class="category" onclick="nextStep('requirementsStep')">Requirements</button>
+  <button class="category" onclick="nextStep('exceptionsStep')">Exceptions & Special Cases</button>
+  <button class="category" onclick="nextStep('multidayStep')">Multi-Day Rentals</button>
+  <button class="category" onclick="nextStep('outterritoryStep')">Out-of-Territory / Call Move</button>
+  <button class="category" onclick="nextStep('reimbursementStep')">Reimbursement / Service Charges</button>
+</div>
+
+<!-- Membership Benefits Path -->
+<div id="membershipStep" class="step">
+  <p>Which membership type?</p>
+  <button class="classic" onclick="nextStep('classicBenefits')">Classic</button>
+  <button class="plus" onclick="nextStep('plusBenefits')">Plus</button>
+  <button class="premier" onclick="nextStep('premierBenefits')">Premier</button>
+  <button onclick="restart()">Back to Categories</button>
+</div>
+
+<div id="classicBenefits" class="step">
+  <p>Classic members: Discounted rental rate from Hertz or Enterprise.</p>
+  <button onclick="nextStep('membershipDone')">Next</button>
+  <button onclick="nextStep('membershipStep')">Back</button>
+</div>
+
+<div id="plusBenefits" class="step">
+  <p>Plus members: Discounted rental rate + free upgrade if available.</p>
+  <button onclick="nextStep('membershipDone')">Next</button>
+  <button onclick="nextStep('membershipStep')">Back</button>
+</div>
+
+<div id="premierBenefits" class="step">
+  <p>Premier members: Free one-day rental (home Club territory) + discounted rate & upgrade.</p>
+  <div class="info">Only available in conjunction with a covered tow; taxes and fees may apply.</div>
+  <button onclick="nextStep('membershipDone')">Next</button>
+  <button onclick="nextStep('membershipStep')">Back</button>
+</div>
+
+<div id="membershipDone" class="step">
+  <p>Membership benefits path complete.</p>
+  <button onclick="restart()">Back to Categories</button>
+</div>
+
+<!-- Setup & Processing Path -->
+<div id="setupStep" class="step">
+  <p>Reservations via RADAR: Select membership type for setup details.</p>
+  <button class="classic" onclick="nextStep('setupClassic')">Classic</button>
+  <button class="plus" onclick="nextStep('setupPlus')">Plus</button>
+  <button class="premier" onclick="nextStep('setupPremier')">Premier</button>
+  <button onclick="restart()">Back to Categories</button>
+</div>
+
+<div id="setupClassic" class="step">
+  <p>Classic: Reserve via RADAR within 48 hours of tow.</p>
+  <div class="info">Provide confirmation number, agency address, and contact number.</div>
+  <button onclick="nextStep('setupDone')">Next</button>
+  <button onclick="nextStep('setupStep')">Back</button>
+</div>
+
+<div id="setupPlus" class="step">
+  <p>Plus: Reserve via RADAR within 48 hours of tow. Free upgrade applied if available.</p>
+  <div class="info">Provide confirmation number, agency address, and contact number.</div>
+  <button onclick="nextStep('setupDone')">Next</button>
+  <button onclick="nextStep('setupStep')">Back</button>
+</div>
+
+<div id="setupPremier" class="step">
+  <p>Premier: Reserve via RADAR within 48 hours; first day free if eligible.</p>
+  <div class="info">Taxes and fees may apply. Provide confirmation number, agency address, and contact number.</div>
+  <button onclick="nextStep('setupDone')">Next</button>
+  <button onclick="nextStep('setupStep')">Back</button>
+</div>
+
+<div id="setupDone" class="step">
+  <p>Setup & Processing path complete.</p>
+  <button onclick="restart()">Back to Categories</button>
+</div>
+
+<!-- Requirements Path -->
+<div id="requirementsStep" class="step">
+  <p>Requirements: Members must meet rental agency rules:</p>
+  <ul>
+    <li>Age requirement</li>
+    <li>Valid driver's license</li>
+    <li>Credit card in member's name</li>
+    <li>Deposit may be required</li>
+  </ul>
+  <button onclick="restart()">Back to Categories</button>
+</div>
+
+<!-- Exceptions Path -->
+<div id="exceptionsStep" class="step">
+  <p>Exceptions & Special Cases:</p>
+  <ul>
+    <li>Change rental agency? Contact agency directly.</li>
+    <li>No locations in RADAR? Expand search or call agency.</li>
+    <li>Non-ACE territory / Call Move? Provide servicing Club contact.</li>
+  </ul>
+  <button onclick="restart()">Back to Categories</button>
+</div>
+
+<!-- Multi-Day Rentals Path -->
+<div id="multidayStep" class="step">
+  <p>Multi-Day Rentals:</p>
+  <ul>
+    <li>Premier: First day free, additional days follow normal terms.</li>
+    <li>Classic & Plus: All days are at discounted rate / upgrade rules.</li>
+  </ul>
+  <button onclick="restart()">Back to Categories</button>
+</div>
+
+<!-- Out-of-Territory / Call Move Path -->
+<div id="outterritoryStep" class="step">
+  <p>Out-of-Territory / Call Move:</p>
+  <ul>
+    <li>Cannot reserve via RADAR.</li>
+    <li>Provide servicing Club phone number or transfer call.</li>
+  </ul>
+  <button onclick="restart()">Back to Categories</button>
+</div>
+
+<!-- Reimbursement / Service Charges Path -->
+<div id="reimbursementStep" class="step">
+  <p>Reimbursement / Service Charges:</p>
+  <ul>
+    <li>Premier members in service charge: Benefits default to Classic.</li>
+    <li>Free one-day rental only available if eligible and not previously used.</li>
+    <li>Reimbursement may be considered under specific conditions.</li>
+  </ul>
+  <button onclick="restart()">Back to Categories</button>
+</div>
+
+<script>
+function nextStep(stepId){
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('show'));
+  document.getElementById(stepId).classList.add('show');
+}
+
+function restart(){
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('show'));
+  document.getElementById('categories').classList.add('show');
+}
+</script>
+
+</body>
+</html>
